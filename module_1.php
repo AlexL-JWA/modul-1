@@ -54,7 +54,7 @@ function factorialWithCache(int $num): float
 {
     $factorial = 1;
     $array = [];
-    $cache = find_csv_file($num);
+    $cache = find_in_json_file($num);
 
     if (empty($cache)) {
         for ($i = 1; $i <= $num; $i++) {
@@ -93,7 +93,7 @@ function write_file(array $data): void
  * @param int $number Index number.
  * @return string
  */
-function find_csv_file(int $number)
+function find_in_json_file(int $number)
 {
     $file = fopen('number.json', 'r');
     $fac = [];

@@ -42,7 +42,7 @@ require_once __DIR__ . '/module_1.php';
             <div>
                 <p>
                     <?php
-                    echo 'Factorial: ' . find_csv_file(5);
+                    echo 'Factorial: ' . find_in_json_file(5);
                     ?>
                 </p>
             </div>
