@@ -22,9 +22,36 @@ require_once __DIR__ . '/module_1.php';
     <div class="row">
         <div class="col">
             <h1>Index file</h1>
-            <h2>call function getLocalTime()</h2>
+            <h2>Call function getLocalTime()</h2>
             <div>
-                
+                <ul>
+                    <?php
+                    $data = getLocalTime();
+
+                    if (!empty($data)) {
+                        foreach ($data as $key => $item) {
+                            ?>
+                            <li><b><?php echo $key; ?>:</b> <?php echo $item; ?></li>
+                            <?php
+                        }
+                    }
+                    ?>
+                </ul>
+            </div>
+            <h2>call function factorialWithCache()</h2>
+            <div>
+                <p>
+                    <?php
+                    echo 'Factorial: ' . find_csv_file(5);
+                    ?>
+                </p>
+            </div>
+            <h2>call function reverse()</h2>
+            <div><p>
+                    <?php
+                    $string = 'WorldTimeAPI is a simple web service which returns the current local time for a given timezone as either plain-text or JSON';
+                    echo reverse($string); ?>
+                </p>
             </div>
         </div>
     </div>

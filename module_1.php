@@ -18,11 +18,21 @@ function getLocalTime(): array
     $url = 'http://worldtimeapi.org/api/ip';
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, $url);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     $resul = curl_exec($ch);
+    $httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
     curl_close($ch);
 
-    var_dump($resul);
+
+    if (200 !== $httpcode) {
+        throw new \Exception('Request error');
+    }
+
+    if (curl_error($ch)) {
+        throw new \Exception(curl_error($ch));
+    }
+
+    $array = json_decode($resul, true);
 
     return $array;
 }
@@ -42,9 +52,63 @@ function getLocalTime(): array
  */
 function factorialWithCache(int $num): float
 {
-    $float = 0.0;
+    $factorial = 1;
+    $array = [];
+    $cache = find_csv_file($num);
 
-    return $float;
+    if (empty($cache)) {
+        for ($i = 1; $i <= $num; $i++) {
+            $factorial = $factorial * $i;
+            $array[$i] = $factorial;
+        }
+
+        write_file($array);
+    } else {
+        $factorial = $cache;
+    }
+
+
+    return $factorial;
+}
+
+/**
+ * Write to JSON file.
+ *
+ * @param array $data Data.
+ *
+ * @return void
+ */
+function write_file(array $data): void
+{
+    $file = fopen('number.json', 'wb');
+
+    fwrite($file, json_encode($data));
+
+    fclose($file);
+}
+
+/**
+ * Find to JSON file index.
+ *
+ * @param int $number Index number.
+ * @return string
+ */
+function find_csv_file(int $number)
+{
+    $file = fopen('number.json', 'r');
+    $fac = [];
+
+    while (!feof($file)) {
+        $fac = json_decode(fgets($file), true);
+    }
+
+    fclose($file);
+
+    if (array_key_exists($number, $fac)) {
+        return (string)$fac[$number];
+    }
+
+    return '';
 }
 
 /**
@@ -63,8 +127,11 @@ function factorialWithCache(int $num): float
  */
 function reverse(string $word): string
 {
-    $string = '';
+    $array = explode(' ', $word);
+    $array = array_reverse($array);
 
-    return $string;
+    $word = implode(' ', $array);
+
+    return $word;
 }
 
